@@ -59,3 +59,12 @@ const T = {
     photoBody:`<p style=\"margin-bottom:10px;color:var(--text-muted);font-size:.9rem\">黃金時刻 ≈ 日出後 45–60 分鐘 / 日落前 45–60 分鐘。</p><div class=\"settings\"><div class=\"set-item\"><b>ISO</b>100–400（腳架可鎖 100）</div><div class=\"set-item\"><b>光圈</b>風景 f/8–f/11 · 人像 f/1.8–f/4</div><div class=\"set-item\"><b>快門</b>手持 ≥1/125 · 腳架可更慢</div><div class=\"set-item\"><b>白平衡</b>陰天 / 陰影（偏暖）</div><div class=\"set-item\"><b>格式</b>一律拍 RAW</div><div class=\"set-item\"><b>曝光</b>−0.3～−1 EV（保護天空）</div></div><ul><li><b>提早到場</b> — 日出／日落前 20–30 分鐘就定位好。</li><li><b>構圖</b> — 三分法，地平線放在上或下 1/3。用前景增加層次。</li><li><b>剪影</b> — 對天空測光，讓主體變成深色輪廓。</li><li><b>星芒</b> — 小光圈 f/16，太陽剛擦到畫面邊緣。</li><li><b>多待一會兒</b> — 最美的顏色常出現在太陽升起／落下後 10–20 分鐘。</li><li><b>手機技巧</b> — 開 HDR 或專業模式，先對亮部天空鎖定曝光再構圖。</li></ul>`
   }
 };
+function tr(k){return (T[lang||"en"]||T.en)[k]||k}
+function setLang(x){lang=x;localStorage.setItem("sunsetHunterLang",x);document.getElementById("langScreen").style.display="none";applyLang();fillDateOptions();if(current)run(current)}
+function applyLang(){if(!lang)return;$("title").innerHTML=tr("title");$("subtitle").textContent=tr("sub");$("search").textContent=tr("search");$("locate").textContent=tr("locate");$("dateLabel").textContent=tr("date");$("daysLabel").textContent=tr("forecast");$("days").options[0].text=tr("d3");$("days").options[1].text=tr("d7");$("howTitle").textContent=tr("how");$("tipText").innerHTML=tr("tip");$("solarMapHint").textContent=tr("solarHint");$("photoTitle").textContent=tr("photoTitle");$("photoContent").innerHTML=tr("photoBody");if(!current)$("status").textContent=tr("start");$("place").placeholder=lang==="zh"?"搜尋城市或地點，例如：台北、倫敦、東京":"Search any city or place, e.g. Taipei, London, Tokyo"}
+const $=id=>document.getElementById(id);
+const today=new Date();today.setHours(0,0,0,0);
+function clamp(x,a=0,b=100){return Math.max(a,Math.min(b,x))}
+function ideal(v,lo,hi){if(v>=lo&&v<=hi)return 100;if(v<lo)return clamp(100-(lo-v)*2);return clamp(100-(v-hi)*2)}
+function skyScore(w){const high=ideal(w.high,25,70);const mid=ideal(w.mid,15,55);const interact=Math.sqrt((high/100)*(mid/100))*100;const low=100-clamp(Math.max(0,w.low-25)*2.2);const rain=100-clamp(w.pop*1.3);const vis=ideal(w.vis/1000,7,28);const hum=ideal(w.hum,40,72);return Math.round(clamp(high*.27+mid*.15+interact*.15+low*.16+rain*.12+vis*.10+hum*.05))}
+function verdict(s){if(s>=88)return tr("excellent");if(s>=78)return tr("very");if(s>=68)return tr("promising");if(s>=55)return tr("possible");return tr("lowchance")}
