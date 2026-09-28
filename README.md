@@ -1,17 +1,20 @@
-# 🌅 Sunset Hunter / 晚霞獵人
+# Sunset Hunter 🌅
 
-Worldwide sunrise & sunset color prediction.
+Sunrise / sunset color prediction (EN / 繁中).
 
-全球日出與晚霞預測工具。
+**Live:** https://8cmzkh66wz.github.io/sunset-and-rise/
 
-## Live
+## Files (only these)
+- `index.html` — UI
+- `app.js` — all logic (search, location, scores, map)
 
-https://8cmzkh66wz.github.io/sunset-and-rise/
+## Restore app.js (if site is broken)
 
-## Features
-
-- Dual scores: sunrise + sunset (0–100)
-- Solar map with correct azimuth (Meeus / SunCalc)
-- Photography tips (EN / 繁中)
-- Open-Meteo weather data
-- Dark sunset-themed UI
+```bash
+git clone https://github.com/8cmzkh66wz/sunset-and-rise.git
+cd sunset-and-rise
+git checkout 1abaa603 -- app.js
+git add app.js
+git commit -m "Restore complete app.js"
+git push origin main
+```
